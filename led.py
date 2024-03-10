@@ -135,7 +135,105 @@ def colons(a, b, c, d):
     msg.append(d)
     i2c.writeto_mem(0x42, 0x46, msg)
 
-def dig_1(a, b, c, d, e, f, g, dp):
+def digit_1(value):
+    segments = {
+        "off": b'\x00\x00\x00\x00\x00\x00\x00\x00',
+        0: b'\xFF\xFF\xFF\xFF\xFF\xFF\x00\x00',
+        1: b'\x00\xFF\xFF\x00\x00\x00\x00\x00',
+        2: b'\xFF\xFF\x00\xFF\xFF\x00\xFF\x00',
+        3: b'\xFF\xFF\xFF\xFF\x00\x00\xFF\x00',
+        4: b'\x00\xFF\xFF\x00\x00\xFF\xFF\x00',
+        5: b'\xFF\x00\xFF\xFF\x00\xFF\xFF\x00',
+        6: b'\xFF\x00\xFF\xFF\xFF\xFF\xFF\x00',
+        7: b'\xFF\xFF\xFF\x00\x00\x00\x00\x00',
+        8: b'\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x00',
+        9: b'\xFF\xFF\xFF\xFF\x00\xFF\xFF\x00',
+    }
+    i2c.writeto_mem(0x42, 0x00, segments[value])
+
+# FGDC.ABE
+def digit_2(value):
+    segments = {
+        "off": b'\x00\x00\x00\x00\x00\x00\x00\x00',
+        0: b'\xFF\x00\xFF\xFF\x00\xFF\xFF\xFF',
+        1: b'\x00\x00\x00\xFF\x00\x00\xFF\x00',
+        2: b'\x00\xFF\xFF\x00\x00\xFF\xFF\xFF',
+        3: b'\x00\xFF\xFF\xFF\x00\xFF\xFF\x00',
+        4: b'\xFF\xFF\x00\xFF\x00\x00\xFF\x00',
+        5: b'\xFF\xFF\xFF\xFF\x00\xFF\x00\x00',
+        6: b'\xFF\xFF\xFF\xFF\x00\xFF\x00\xFF',
+        7: b'\x00\x00\x00\xFF\x00\xFF\xFF\x00',
+        8: b'\xFF\xFF\xFF\xFF\x00\xFF\xFF\xFF',
+        9: b'\xFF\xFF\xFF\xFF\x00\xFF\xFF\x00',
+    }
+    i2c.writeto_mem(0x42, 0x12, segments[value])
+
+def digit_3(value):
+    segments = {
+        "off": b'\x00\x00\x00\x00\x00\x00\x00\x00',
+        0: b'\xFF\xFF\xFF\xFF\xFF\xFF\x00\x00',
+        1: b'\x00\xFF\xFF\x00\x00\x00\x00\x00',
+        2: b'\xFF\xFF\x00\xFF\xFF\x00\xFF\x00',
+        3: b'\xFF\xFF\xFF\xFF\x00\x00\xFF\x00',
+        4: b'\x00\xFF\xFF\x00\x00\xFF\xFF\x00',
+        5: b'\xFF\x00\xFF\xFF\x00\xFF\xFF\x00',
+        6: b'\xFF\x00\xFF\xFF\xFF\xFF\xFF\x00',
+        7: b'\xFF\xFF\xFF\x00\x00\x00\x00\x00',
+        8: b'\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x00',
+        9: b'\xFF\xFF\xFF\xFF\x00\xFF\xFF\x00',
+    }
+    i2c.writeto_mem(0x42, 0x24, segments[value])
+
+def digit_4(value):
+    segments = {
+        "off": b'\x00\x00\x00\x00\x00\x00\x00\x00',
+        0: b'\xFF\xFF\xFF\xFF\xFF\xFF\x00\x00',
+        1: b'\x00\xFF\xFF\x00\x00\x00\x00\x00',
+        2: b'\xFF\xFF\x00\xFF\xFF\x00\xFF\x00',
+        3: b'\xFF\xFF\xFF\xFF\x00\x00\xFF\x00',
+        4: b'\x00\xFF\xFF\x00\x00\xFF\xFF\x00',
+        5: b'\xFF\x00\xFF\xFF\x00\xFF\xFF\x00',
+        6: b'\xFF\x00\xFF\xFF\xFF\xFF\xFF\x00',
+        7: b'\xFF\xFF\xFF\x00\x00\x00\x00\x00',
+        8: b'\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x00',
+        9: b'\xFF\xFF\xFF\xFF\x00\xFF\xFF\x00',
+    }
+    i2c.writeto_mem(0x42, 0x08, segments[value])
+
+# FGDC.ABE
+def digit_5(value):
+    segments = {
+        "off": b'\x00\x00\x00\x00\x00\x00\x00\x00',
+        0: b'\xFF\x00\xFF\xFF\x00\xFF\xFF\xFF',
+        1: b'\x00\x00\x00\xFF\x00\x00\xFF\x00',
+        2: b'\x00\xFF\xFF\x00\x00\xFF\xFF\xFF',
+        3: b'\x00\xFF\xFF\xFF\x00\xFF\xFF\x00',
+        4: b'\xFF\xFF\x00\xFF\x00\x00\xFF\x00',
+        5: b'\xFF\xFF\xFF\xFF\x00\xFF\x00\x00',
+        6: b'\xFF\xFF\xFF\xFF\x00\xFF\x00\xFF',
+        7: b'\x00\x00\x00\xFF\x00\xFF\xFF\x00',
+        8: b'\xFF\xFF\xFF\xFF\x00\xFF\xFF\xFF',
+        9: b'\xFF\xFF\xFF\xFF\x00\xFF\xFF\x00',
+    }
+    i2c.writeto_mem(0x42, 0x1A, segments[value])
+
+def digit_6(value):
+    segments = {
+        "off": b'\x00\x00\x00\x00\x00\x00\x00\x00',
+        0: b'\xFF\xFF\xFF\xFF\xFF\xFF\x00\x00',
+        1: b'\x00\xFF\xFF\x00\x00\x00\x00\x00',
+        2: b'\xFF\xFF\x00\xFF\xFF\x00\xFF\x00',
+        3: b'\xFF\xFF\xFF\xFF\x00\x00\xFF\x00',
+        4: b'\x00\xFF\xFF\x00\x00\xFF\xFF\x00',
+        5: b'\xFF\x00\xFF\xFF\x00\xFF\xFF\x00',
+        6: b'\xFF\x00\xFF\xFF\xFF\xFF\xFF\x00',
+        7: b'\xFF\xFF\xFF\x00\x00\x00\x00\x00',
+        8: b'\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x00',
+        9: b'\xFF\xFF\xFF\xFF\x00\xFF\xFF\x00',
+    }
+    i2c.writeto_mem(0x42, 0x2C, segments[value])
+
+def digit_1_raw(a, b, c, d, e, f, g, dp):
     msg = bytearray()
     msg.append(a)
     msg.append(b)
@@ -147,7 +245,7 @@ def dig_1(a, b, c, d, e, f, g, dp):
     msg.append(dp)
     i2c.writeto_mem(0x42, 0x00, msg)
     
-def dig_2(a, b, c, d, e, f, g, dp):
+def dig_2_raw(a, b, c, d, e, f, g, dp):
     msg = bytearray()
     msg.append(f)
     msg.append(g)
@@ -159,7 +257,7 @@ def dig_2(a, b, c, d, e, f, g, dp):
     msg.append(e)
     i2c.writeto_mem(0x42, 0x12, msg)
     
-def dig_3(a, b, c, d, e, f, g, dp):
+def dig_3_raw(a, b, c, d, e, f, g, dp):
     msg = bytearray()
     msg.append(a)
     msg.append(b)
@@ -171,7 +269,7 @@ def dig_3(a, b, c, d, e, f, g, dp):
     msg.append(dp)
     i2c.writeto_mem(0x42, 0x24, msg)
     
-def dig_4(a, b, c, d, e, f, g, dp):
+def dig_4_raw(a, b, c, d, e, f, g, dp):
     msg = bytearray()
     msg.append(a)
     msg.append(b)
@@ -183,7 +281,7 @@ def dig_4(a, b, c, d, e, f, g, dp):
     msg.append(dp)
     i2c.writeto_mem(0x42, 0x08, msg)
     
-def dig_5(a, b, c, d, e, f, g, dp):
+def dig_5_raw(a, b, c, d, e, f, g, dp):
     msg = bytearray()
     msg.append(f)
     msg.append(g)
@@ -195,7 +293,7 @@ def dig_5(a, b, c, d, e, f, g, dp):
     msg.append(e)
     i2c.writeto_mem(0x42, 0x1A, msg)
     
-def dig_6(a, b, c, d, e, f, g, dp):
+def dig_6_raw(a, b, c, d, e, f, g, dp):
     msg = bytearray()
     msg.append(a)
     msg.append(b)
