@@ -6,12 +6,7 @@ import micropython
 import random
 import time
 
-led.lcd_rgb(0,0,0)
-lcd.clear_screen()
-led.colons(255,255,255,255)
-led.sw_rgb(10, 255, 0, 0)
-
-time_string = "      "
+time_string = "000000"
 time_seconds = 0
 
 def time_push(digit):
@@ -78,7 +73,9 @@ def time_string_to_seconds():
 sw1 = picozero.Button(14)
 
 def button_digit_7():
-    time_push("7")
+    global timer_running
+    if not timer_running:
+        time_push("7")
     print("Button_7")
 
 sw1.when_pressed = button_digit_7
@@ -87,7 +84,9 @@ sw1.when_pressed = button_digit_7
 sw2 = picozero.Button(11)
 
 def button_digit_8():
-    time_push("8")
+    global timer_running
+    if not timer_running:
+        time_push("8")
     print("Button_8")
 
 sw2.when_pressed = button_digit_8
@@ -96,7 +95,9 @@ sw2.when_pressed = button_digit_8
 sw3 = picozero.Button(10)
 
 def button_digit_9():
-    time_push("9")
+    global timer_running
+    if not timer_running:
+        time_push("9")
     print("Button_9")
 
 sw3.when_pressed = button_digit_9
@@ -105,6 +106,13 @@ sw3.when_pressed = button_digit_9
 sw4 = picozero.Button(4)
 
 def button_softkey_1():
+    global timer_direction
+    if timer_direction == "down":
+        timer_direction = "up"
+        led.sw_rgb(4, 0, 255, 0)
+    else:
+        timer_direction = "down"
+        led.sw_rgb(4, 255, 0, 0)
     print("Button_softkey_1")
 
 sw4.when_pressed = button_softkey_1
@@ -113,7 +121,9 @@ sw4.when_pressed = button_softkey_1
 sw5 = picozero.Button(21)
 
 def button_digit_0():
-    time_push("0")
+    global timer_running
+    if not timer_running:
+        time_push("0")
     print("Button_0")
 
 sw5.when_pressed = button_digit_0
@@ -122,7 +132,9 @@ sw5.when_pressed = button_digit_0
 sw6 = picozero.Button(15)
 
 def button_digit_4():
-    time_push("4")
+    global timer_running
+    if not timer_running:
+        time_push("4")
     print("Button_4")
 
 sw6.when_pressed = button_digit_4
@@ -131,7 +143,9 @@ sw6.when_pressed = button_digit_4
 sw7 = picozero.Button(17)
 
 def button_digit_5():
-    time_push("5")
+    global timer_running
+    if not timer_running:
+        time_push("5")
     print("Button_5")
 
 sw7.when_pressed = button_digit_5
@@ -140,7 +154,9 @@ sw7.when_pressed = button_digit_5
 sw8 = picozero.Button(16)
 
 def button_digit_6():
-    time_push("6")
+    global timer_running
+    if not timer_running:
+        time_push("6")
     print("Button_6")
 
 sw8.when_pressed = button_digit_6
@@ -158,6 +174,7 @@ sw10 = picozero.Button(26)
 
 def button_start_stop():
     global timer_running
+    global timer_direction
     if timer_running:
         timerA_stop()
     else:
@@ -170,7 +187,9 @@ sw10.when_pressed = button_start_stop
 sw11 = picozero.Button(18)
 
 def button_digit_1():
-    time_push("1")
+    global timer_running
+    if not timer_running:
+        time_push("1")
     print("Button_1")
 
 sw11.when_pressed = button_digit_1
@@ -179,7 +198,9 @@ sw11.when_pressed = button_digit_1
 sw12 = picozero.Button(19)
 
 def button_digit_2():
-    time_push("2")
+    global timer_running
+    if not timer_running:
+        time_push("2")
     print("Button_2")
 
 sw12.when_pressed = button_digit_2
@@ -188,7 +209,9 @@ sw12.when_pressed = button_digit_2
 sw13 = picozero.Button(20)
 
 def button_digit_3():
-    time_push("3")
+    global timer_running
+    if not timer_running:
+        time_push("3")
     print("Buton_3")
 
 sw13.when_pressed = button_digit_3
@@ -207,7 +230,7 @@ sw15 = picozero.Button(22)
 def button_reset():
     global time_string
     global time_seconds
-    time_string = "      "
+    time_string = "000000"
     time_seconds = 0
     display_time()
     print("Button_reset")
@@ -220,13 +243,23 @@ hue = 0
 
 def tick(x):
     global time_seconds
-    if time_seconds <= 0:
-        timerA_stop()
-    else:
-        time_seconds -= 1
-        time_seconds_to_string()
-    if time_seconds <= 0:
-        timerA_stop()
+    global timer_direction
+    if timer_direction == "down":
+        if time_seconds <= 0:
+            timerA_stop()
+        else:
+            time_seconds -= 1
+            time_seconds_to_string()
+        if time_seconds <= 0:
+            timerA_stop()
+    else: # up
+        if time_seconds >= 359999:
+            timerA_stop()
+        else:
+            time_seconds += 1
+            time_seconds_to_string()
+        if time_seconds >= 359999:
+            timerA_stop()
     display_time()
     print("tick")
 
@@ -239,11 +272,15 @@ timerA = machine.Timer()
 def timerA_start():
     time_string_to_seconds()
     global time_seconds
-    if time_seconds <= 0:
+    global timer_direction
+    if timer_direction == "down" and time_seconds <= 0:
+        return
+    if timer_direction == "up" and time_seconds >= 359999:
         return
     timerA.init(mode=machine.Timer.PERIODIC, period=1000, callback=timerA_callback)
     global timer_running
     timer_running = True
+    keypad_color(32, 255, 0)
     led.sw_rgb(10, 0, 255, 0)
     display_time()
 
@@ -252,6 +289,19 @@ def timerA_stop():
     timerA.deinit()
     timer_running = False
     led.sw_rgb(10, 255, 0, 0)
+    keypad_color(32, 255, 50)
+
+def keypad_color(h, s, v):
+    led.sw_hsv(1, h, s, v)
+    led.sw_hsv(2, h, s, v)
+    led.sw_hsv(3, h, s, v)
+    led.sw_hsv(6, h, s, v)
+    led.sw_hsv(7, h, s, v)
+    led.sw_hsv(8, h, s, v)
+    led.sw_hsv(11, h, s, v)
+    led.sw_hsv(12, h, s, v)
+    led.sw_hsv(13, h, s, v)
+    led.sw_hsv(5, h, s, v)
 
 def carbonite_screensaver():
     while True:
@@ -260,3 +310,12 @@ def carbonite_screensaver():
         for value in range(255,-1,-1):
             led.sw_hsv(button, hue, 255, value)
             time.sleep(0.01)
+
+led.lcd_rgb(0,0,0)
+lcd.clear_screen()
+led.colons(255,255,255,255)
+led.sw_rgb(10, 255, 0, 0)
+led.sw_rgb(4, 255, 0, 0)
+keypad_color(32, 255, 50)
+led.sw_hsv(15, 32, 255, 50)
+display_time()
