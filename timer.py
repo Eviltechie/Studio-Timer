@@ -67,6 +67,23 @@ def time_string_to_seconds():
     
     time_seconds = (hours * 60 * 60) + (minutes * 60) + seconds
 
+class Keypad_Button:    
+    def __init__(self, digit, preset_seconds):
+        self.digit = digit
+        self.preset_seconds = preset_seconds
+    
+    def button(self):
+        global timer_running
+        global mode
+        if not timer_running and mode == "normal":
+            time_push(str(self.digit))
+        if mode == "preset":
+            global time_seconds
+            time_seconds = self.preset_seconds
+            time_seconds_to_string()
+            display_time()
+        print("Button_" + str(self.digit))
+
 # Button() uses GPIO number
 
 # 7
