@@ -88,54 +88,15 @@ class Keypad_Button:
 
 # 7
 sw1 = picozero.Button(14)
-
-def button_digit_7():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("7")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 420
-        time_seconds_to_string()
-        display_time()
-    print("Button_7")
-
-sw1.when_pressed = button_digit_7
+sw1.when_pressed = Keypad_Button(7, 420).button
 
 # 8
 sw2 = picozero.Button(11)
-
-def button_digit_8():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("8")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 480
-        time_seconds_to_string()
-        display_time()
-    print("Button_8")
-
-sw2.when_pressed = button_digit_8
+sw2.when_pressed = Keypad_Button(8, 480).button
 
 # 9
 sw3 = picozero.Button(10)
-
-def button_digit_9():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("9")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 540
-        time_seconds_to_string()
-        display_time()
-    print("Button_9")
-
-sw3.when_pressed = button_digit_9
+sw3.when_pressed = Keypad_Button(9, 540).button
 
 # softkey 1
 sw4 = picozero.Button(4)
@@ -154,71 +115,19 @@ sw4.when_pressed = button_softkey_1
 
 # 0
 sw5 = picozero.Button(21)
-
-def button_digit_0():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("0")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 30
-        time_seconds_to_string()
-        display_time()
-    print("Button_0")
-
-sw5.when_pressed = button_digit_0
+sw5.when_pressed = Keypad_Button(0, 30).button
 
 # 4
 sw6 = picozero.Button(15)
-
-def button_digit_4():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("4")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 240
-        time_seconds_to_string()
-        display_time()
-    print("Button_4")
-
-sw6.when_pressed = button_digit_4
+sw6.when_pressed = Keypad_Button(4, 240).button
 
 # 5
 sw7 = picozero.Button(17)
-
-def button_digit_5():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("5")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 300
-        time_seconds_to_string()
-        display_time()
-    print("Button_5")
-
-sw7.when_pressed = button_digit_5
+sw7.when_pressed = Keypad_Button(5, 300).button
 
 # 6
 sw8 = picozero.Button(16)
-
-def button_digit_6():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("6")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 360
-        time_seconds_to_string()
-        display_time()
-    print("Button_6")
-
-sw8.when_pressed = button_digit_6
+sw8.when_pressed = Keypad_Button(6, 360).button
 
 # softkey 2
 sw9 = picozero.Button(3)
@@ -260,54 +169,15 @@ sw10.when_pressed = button_start_stop
 
 # 1
 sw11 = picozero.Button(18)
-
-def button_digit_1():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("1")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 60
-        time_seconds_to_string()
-        display_time()
-    print("Button_1")
-
-sw11.when_pressed = button_digit_1
+sw11.when_pressed = Keypad_Button(1, 60).button
 
 # 2
 sw12 = picozero.Button(19)
-
-def button_digit_2():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("2")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 120
-        time_seconds_to_string()
-        display_time()
-    print("Button_2")
-
-sw12.when_pressed = button_digit_2
+sw12.when_pressed = Keypad_Button(2, 120).button
 
 # 3
 sw13 = picozero.Button(20)
-
-def button_digit_3():
-    global timer_running
-    global mode
-    if not timer_running and mode == "normal":
-        time_push("3")
-    if mode == "preset":
-        global time_seconds
-        time_seconds = 180
-        time_seconds_to_string()
-        display_time()
-    print("Buton_3")
-
-sw13.when_pressed = button_digit_3
+sw13.when_pressed = Keypad_Button(3, 180).button
 
 #softkey 3
 sw14 = picozero.Button(2)
