@@ -3,7 +3,7 @@ import time
 import machine
 
 class Button:    
-    def __init__(self, pin_number, on_press, on_release):
+    def __init__(self, pin_number, on_press=None, on_release=None):
         # GPIO number used to construct a Pin
         self.pin_number = pin_number
         # Method to run on press, or None
