@@ -1,6 +1,6 @@
 import led
 import lcd
-import picozero
+import button
 import machine
 import micropython
 import random
@@ -87,19 +87,16 @@ class Keypad_Button:
 # Button() uses GPIO number
 
 # 7
-sw1 = picozero.Button(14)
-sw1.when_pressed = Keypad_Button(7, 420).button
+sw1 = button.Button(14, Keypad_Button(7, 420).button)
 
 # 8
-sw2 = picozero.Button(11)
-sw2.when_pressed = Keypad_Button(8, 480).button
+sw2 = button.Button(11, Keypad_Button(8, 480).button)
 
 # 9
-sw3 = picozero.Button(10)
-sw3.when_pressed = Keypad_Button(9, 540).button
+sw3 = button.Button(10, Keypad_Button(9, 540).button)
 
 # softkey 1
-sw4 = picozero.Button(4)
+sw4 = button.Button(4)
 
 def button_softkey_1():
     global timer_direction
@@ -111,26 +108,22 @@ def button_softkey_1():
         led.sw_rgb(4, 255, 0, 0)
     print("Button_softkey_1")
 
-sw4.when_pressed = button_softkey_1
+sw4.on_press = button_softkey_1
 
 # 0
-sw5 = picozero.Button(21)
-sw5.when_pressed = Keypad_Button(0, 30).button
+sw5 = button.Button(21, Keypad_Button(0, 30).button)
 
 # 4
-sw6 = picozero.Button(15)
-sw6.when_pressed = Keypad_Button(4, 240).button
+sw6 = button.Button(15, Keypad_Button(4, 240).button)
 
 # 5
-sw7 = picozero.Button(17)
-sw7.when_pressed = Keypad_Button(5, 300).button
+sw7 = button.Button(17, Keypad_Button(5, 300).button)
 
 # 6
-sw8 = picozero.Button(16)
-sw8.when_pressed = Keypad_Button(6, 360).button
+sw8 = button.Button(16, Keypad_Button(6, 360).button)
 
 # softkey 2
-sw9 = picozero.Button(3)
+sw9 = button.Button(3)
 
 def button_softkey_2_press():
     global mode
@@ -150,11 +143,11 @@ def button_softkey_2_release():
     led.sw_hsv(9, 160, 255, 50)
     print("Button_softkey_2_release")
 
-sw9.when_pressed = button_softkey_2_press
-sw9.when_released= button_softkey_2_release
+sw9.on_press = button_softkey_2_press
+sw9.on_release = button_softkey_2_release
 
 # start/stop
-sw10 = picozero.Button(26)
+sw10 = button.Button(26)
 
 def button_start_stop():
     global timer_running
@@ -165,30 +158,27 @@ def button_start_stop():
         timerA_start()
     print("Button_start_stop")
 
-sw10.when_pressed = button_start_stop
+sw10.on_press = button_start_stop
 
 # 1
-sw11 = picozero.Button(18)
-sw11.when_pressed = Keypad_Button(1, 60).button
+sw11 = button.Button(18, Keypad_Button(1, 60).button)
 
 # 2
-sw12 = picozero.Button(19)
-sw12.when_pressed = Keypad_Button(2, 120).button
+sw12 = button.Button(19, Keypad_Button(2, 120).button)
 
 # 3
-sw13 = picozero.Button(20)
-sw13.when_pressed = Keypad_Button(3, 180).button
+sw13 = button.Button(20, Keypad_Button(3, 180).button)
 
 #softkey 3
-sw14 = picozero.Button(2)
+sw14 = button.Button(2)
 
 def button_softkey_3():
     print("Button_softkey_3")
 
-sw14.when_pressed = button_softkey_3
+sw14.on_press = button_softkey_3
 
 # reset
-sw15 = picozero.Button(22)
+sw15 = button.Button(22)
 
 def button_reset():
     global time_string
@@ -198,7 +188,7 @@ def button_reset():
     display_time()
     print("Button_reset")
 
-sw15.when_pressed = button_reset
+sw15.on_press = button_reset
 
 timer_running = False
 timer_direction = "down"
@@ -225,7 +215,6 @@ def tick(x):
         if time_seconds >= 359999:
             timerA_stop()
     display_time()
-    print("tick")
 
 def timerA_callback(t):
     micropython.schedule(tick, 0)
