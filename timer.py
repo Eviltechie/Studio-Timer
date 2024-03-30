@@ -1,10 +1,13 @@
+import machine
+
 class Timer:
 
     # Pass a manager that we can send updates back to so it knows when to update the display?
     # Pass a color to represent the timer?
     # Pass an ID for the actual machine timer?
     # Not for this class, but need to store button/color state so we can implement screensaver and press feedback.
-    def __init__(self):
+    def __init__(self, timer_controller):
+        self.timer_controller = timer_controller
         self.direction = "down"
         self.running = False
         self.time = 0
@@ -20,14 +23,14 @@ class Timer:
             return False
         self.timer.init(mode=machine.Timer.PERIODIC, period=self.rate, callback=self.callback)
         self.timer_running = True
-        # notify
+        self.timer_controller.notify(self)
         return True
 
     # Stop the timer.
     def stop(self):
         self.timer.deinit()
         self.timer_running = False
-        # notify
+        self.timer_controller.notify(self)
         return True
 
     # Change the rate (speed) of the timer.
@@ -37,17 +40,17 @@ class Timer:
         if self.timer_running:
             self.stop()
             self.start()
-        # notify
+        self.timer_controller.notify(self)
 
     # Change the timer direction. "up" or "down"
     def set_direction(self, direction):
         self.direction = direction
-        # notify
+        self.timer_controller.notify(self)
 
     # Set the time, units is ???
     def set_time(self, time):
         self.time = time
-        # notify
+        self.timer_controller.notify(self)
 
     # Callback which is run once per tick.
     def callback(self, x):
@@ -65,4 +68,5 @@ class Timer:
                 self.time += 1
             if self.time >= 359999:
                 self.stop()
+        self.timer_controller.notify(self)
         print(self.time)
