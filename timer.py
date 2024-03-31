@@ -22,14 +22,14 @@ class Timer:
         if self.direction == "up" and self.time >= 359999: # Max 99h 59m 59s
             return False
         self.timer.init(mode=machine.Timer.PERIODIC, period=self.rate, callback=self.callback)
-        self.timer_running = True
+        self.running = True
         self.timer_controller.notify(self)
         return True
 
     # Stop the timer.
     def stop(self):
         self.timer.deinit()
-        self.timer_running = False
+        self.running = False
         self.timer_controller.notify(self)
         return True
 
@@ -37,7 +37,7 @@ class Timer:
     # Normal tick is every 1000ms.
     def change_rate(self, rate):
         self.rate = rate
-        if self.timer_running:
+        if self.running:
             self.stop()
             self.start()
         self.timer_controller.notify(self)
