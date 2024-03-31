@@ -60,7 +60,10 @@ class TimerController:
         led.digit_5(self.time_string[4])
         led.digit_6(self.time_string[5])
     
-    def notify(self, timer):
+    def notify(self, timer, event):
         if timer == self.active_timer:
             self.time_seconds_to_string();
             self.display_time()
+        if event == "stop":
+            led.sw_rgb(10, 255, 0, 0)
+            led.keypad_color(32, 255, 50)

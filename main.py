@@ -67,7 +67,7 @@ sw9 = button.Button(3)
 def button_softkey_2_press():
     global mode
     mode = "preset"
-    keypad_color(160, 255, 50)
+    led.keypad_color(160, 255, 50)
     led.sw_hsv(9, 160, 255, 100)
     print("Button_softkey_2_press")
 
@@ -76,9 +76,9 @@ def button_softkey_2_release():
     mode = "normal"
     global controller
     if controller.active_timer.running:
-        keypad_color(32, 255, 0)
+        led.keypad_color(32, 255, 0)
     else:
-        keypad_color(32, 255, 50)
+        led.keypad_color(32, 255, 50)
     led.sw_hsv(9, 160, 255, 50)
     print("Button_softkey_2_release")
 
@@ -93,11 +93,11 @@ def button_start_stop():
     if controller.active_timer.running:
         if controller.active_timer.stop():
             led.sw_rgb(10, 255, 0, 0)
-            keypad_color(32, 255, 50)
+            led.keypad_color(32, 255, 50)
     else:
         controller.time_string_to_seconds()
         if controller.active_timer.start():
-            keypad_color(32, 255, 0)
+            led.keypad_color(32, 255, 0)
             led.sw_rgb(10, 0, 255, 0)
     print("Button_start_stop")
 
@@ -134,18 +134,6 @@ sw15.on_press = button_reset
 mode = "normal"
 hue = 0
 
-def keypad_color(h, s, v):
-    led.sw_hsv(1, h, s, v)
-    led.sw_hsv(2, h, s, v)
-    led.sw_hsv(3, h, s, v)
-    led.sw_hsv(6, h, s, v)
-    led.sw_hsv(7, h, s, v)
-    led.sw_hsv(8, h, s, v)
-    led.sw_hsv(11, h, s, v)
-    led.sw_hsv(12, h, s, v)
-    led.sw_hsv(13, h, s, v)
-    led.sw_hsv(5, h, s, v)
-
 def carbonite_screensaver():
     while True:
         button = random.choice(range(1, 16))
@@ -159,7 +147,7 @@ lcd.clear_screen()
 led.colons(255,255,255,255)
 led.sw_rgb(10, 255, 0, 0)
 led.sw_rgb(4, 255, 0, 0)
-keypad_color(32, 255, 50)
+led.keypad_color(32, 255, 50)
 led.sw_hsv(15, 32, 255, 50)
 led.sw_hsv(9, 160, 255, 50)
 controller.display_time()

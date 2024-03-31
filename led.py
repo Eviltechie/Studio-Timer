@@ -129,6 +129,18 @@ def sw_hsv(sw, h, s, v):
     msg.append(rgb[2])
     i2c.writeto_mem(0x42, switch_address[sw], msg)
 
+def keypad_color(h, s, v):
+    sw_hsv(1, h, s, v)
+    sw_hsv(2, h, s, v)
+    sw_hsv(3, h, s, v)
+    sw_hsv(6, h, s, v)
+    sw_hsv(7, h, s, v)
+    sw_hsv(8, h, s, v)
+    sw_hsv(11, h, s, v)
+    sw_hsv(12, h, s, v)
+    sw_hsv(13, h, s, v)
+    sw_hsv(5, h, s, v)
+
 def colons(a, b, c, d):
     if a < 0 or b < 0 or c < 0 or d < 0 or a > 255 or b > 255 or c > 255 or d > 255:
         raise Exception("Brightness out of range")

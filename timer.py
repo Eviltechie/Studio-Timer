@@ -23,14 +23,14 @@ class Timer:
             return False
         self.timer.init(mode=machine.Timer.PERIODIC, period=self.rate, callback=self.callback)
         self.running = True
-        self.timer_controller.notify(self)
+        self.timer_controller.notify(self, "start")
         return True
 
     # Stop the timer.
     def stop(self):
         self.timer.deinit()
         self.running = False
-        self.timer_controller.notify(self)
+        self.timer_controller.notify(self, "stop")
         return True
 
     # Change the rate (speed) of the timer.
@@ -40,17 +40,17 @@ class Timer:
         if self.running:
             self.stop()
             self.start()
-        self.timer_controller.notify(self)
+        self.timer_controller.notify(self, "rate")
 
     # Change the timer direction. "up" or "down"
     def set_direction(self, direction):
         self.direction = direction
-        self.timer_controller.notify(self)
+        self.timer_controller.notify(self, "direction")
 
     # Set the time, units is ???
     def set_time(self, time):
         self.time = time
-        self.timer_controller.notify(self)
+        self.timer_controller.notify(self, "time")
 
     # Callback which is run once per tick.
     def callback(self, x):
@@ -68,5 +68,5 @@ class Timer:
                 self.time += 1
             if self.time >= 359999:
                 self.stop()
-        self.timer_controller.notify(self)
+        self.timer_controller.notify(self, "tick")
         print(self.time)
