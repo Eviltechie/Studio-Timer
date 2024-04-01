@@ -6,8 +6,10 @@ import micropython
 import random
 import time
 import timer_controller
+import menu_controller
 
-controller = timer_controller.TimerController()
+t_controller = timer_controller.TimerController()
+m_controller = menu_controller.MenuController(t_controller)
 
 class Keypad_Button:    
     def __init__(self, digit, preset_seconds):
@@ -15,12 +17,12 @@ class Keypad_Button:
         self.preset_seconds = preset_seconds
     
     def button(self):
-        global controller
+        global t_controller
         global mode
-        if not controller.active_timer.running and mode == "normal":
-            controller.push_digit(str(self.digit))
+        if not t_controller.active_timer.running and mode == "normal":
+            t_controller.push_digit(str(self.digit))
         if mode == "preset":
-            controller.active_timer.set_time(self.preset_seconds)
+            t_controller.active_timer.set_time(self.preset_seconds)
         print("Button_" + str(self.digit))
 
 # Button() uses GPIO number
@@ -38,13 +40,7 @@ sw3 = button.Button(10, Keypad_Button(9, 540).button)
 sw4 = button.Button(4)
 
 def button_softkey_1():
-    global controller
-    if controller.active_timer.direction == "down":
-        controller.active_timer.set_direction("up")
-        led.sw_rgb(4, 0, 255, 0)
-    else:
-        controller.active_timer.set_direction("down")
-        led.sw_rgb(4, 255, 0, 0)
+    m_controller.active_page.softkey_1_press()
     print("Button_softkey_1")
 
 sw4.on_press = button_softkey_1
@@ -74,8 +70,8 @@ def button_softkey_2_press():
 def button_softkey_2_release():
     global mode
     mode = "normal"
-    global controller
-    if controller.active_timer.running:
+    global t_controller
+    if t_controller.active_timer.running:
         led.keypad_color(32, 255, 0)
     else:
         led.keypad_color(32, 255, 50)
@@ -89,14 +85,14 @@ sw9.on_release = button_softkey_2_release
 sw10 = button.Button(26)
 
 def button_start_stop():
-    global controller
-    if controller.active_timer.running:
-        if controller.active_timer.stop():
+    global t_controller
+    if t_controller.active_timer.running:
+        if t_controller.active_timer.stop():
             led.sw_rgb(10, 255, 0, 0)
             led.keypad_color(32, 255, 50)
     else:
-        controller.time_string_to_seconds()
-        if controller.active_timer.start():
+        t_controller.time_string_to_seconds()
+        if t_controller.active_timer.start():
             led.keypad_color(32, 255, 0)
             led.sw_rgb(10, 0, 255, 0)
     print("Button_start_stop")
@@ -116,6 +112,7 @@ sw13 = button.Button(20, Keypad_Button(3, 180).button)
 sw14 = button.Button(2)
 
 def button_softkey_3():
+    m_controller.active_page.softkey_3_press()
     print("Button_softkey_3")
 
 sw14.on_press = button_softkey_3
@@ -124,9 +121,9 @@ sw14.on_press = button_softkey_3
 sw15 = button.Button(22)
 
 def button_reset():
-    global controller
-    controller.active_timer.set_time(0)
-    controller.active_timer.change_rate(1000)
+    global t_controller
+    t_controller.active_timer.set_time(0)
+    t_controller.active_timer.change_rate(1000)
     print("Button_reset")
 
 sw15.on_press = button_reset
@@ -150,4 +147,5 @@ led.sw_rgb(4, 255, 0, 0)
 led.keypad_color(32, 255, 50)
 led.sw_hsv(15, 32, 255, 50)
 led.sw_hsv(9, 160, 255, 50)
-controller.display_time()
+led.lcd_rgb(255, 0, 0)
+t_controller.display_time()

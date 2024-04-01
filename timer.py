@@ -6,8 +6,12 @@ class Timer:
     # Pass a color to represent the timer?
     # Pass an ID for the actual machine timer?
     # Not for this class, but need to store button/color state so we can implement screensaver and press feedback.
-    def __init__(self, timer_controller):
+    def __init__(self, timer_controller, timer_name, h, s, v):
         self.timer_controller = timer_controller
+        self.timer_name = timer_name # Shows on LCD
+        self.h = h # HSV for keypad color
+        self.s = s
+        self.v = v
         self.direction = "down"
         self.running = False
         self.time = 0

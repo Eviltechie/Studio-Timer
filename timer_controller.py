@@ -5,7 +5,11 @@ class TimerController:
     
     def __init__(self):
         self.time_string = "000000"
-        self.timers = [timer.Timer(self), timer.Timer(self), timer.Timer(self)]
+        self.timers = [
+            timer.Timer(self, "Timer 1", 0, 0, 0),
+            timer.Timer(self, "Timer 2", 0, 0, 0),
+            timer.Timer(self, "Timer 3", 0, 0, 0),
+            ]
         self.active_timer = self.timers[0]
     
     def time_seconds_to_string(self):
