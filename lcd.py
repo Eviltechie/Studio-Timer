@@ -1,4 +1,5 @@
 import machine
+import time
 
 lcd = machine.UART(0)
 lcd.init(baudrate=9600, bits=8, parity=None, stop=1, tx=machine.Pin(12), rx=machine.Pin(13))
@@ -6,6 +7,7 @@ lcd.init(baudrate=9600, bits=8, parity=None, stop=1, tx=machine.Pin(12), rx=mach
 # Clears the screen and returns cursor to top left.
 def clear_screen():
     lcd.write(b'\xFE\x51')
+    time.sleep(0.005) # Sleep during display execution time
     
 # Moves the cursor to the specified line and column, zero indexed.
 def set_position(line, column):
