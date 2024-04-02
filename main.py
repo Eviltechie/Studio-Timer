@@ -12,70 +12,68 @@ t_controller = timer_controller.TimerController()
 m_controller = menu_controller.MenuController(t_controller)
 
 class Keypad_Button:    
-    def __init__(self, digit, preset_seconds):
+    def __init__(self, digit):
         self.digit = digit
-        self.preset_seconds = preset_seconds
     
     def button(self):
         global t_controller
-        global mode
-        if not t_controller.active_timer.running and mode == "normal":
+        global m_controller
+        if not t_controller.active_timer.running and m_controller.mode == "normal":
             t_controller.push_digit(str(self.digit))
-        if mode == "preset":
-            t_controller.active_timer.set_time(self.preset_seconds)
+        if m_controller.mode == "menu_1":
+            m_controller.digit(self.digit)
+        if m_controller.mode == "menu_2":
+            m_controller.digit(self.digit)
+        if m_controller.mode == "menu_3":
+            m_controller.digit(self.digit)
         print("Button_" + str(self.digit))
 
 # Button() uses GPIO number
 
 # 7
-sw1 = button.Button(14, Keypad_Button(7, 420).button)
+sw1 = button.Button(14, Keypad_Button(7).button)
 
 # 8
-sw2 = button.Button(11, Keypad_Button(8, 480).button)
+sw2 = button.Button(11, Keypad_Button(8).button)
 
 # 9
-sw3 = button.Button(10, Keypad_Button(9, 540).button)
+sw3 = button.Button(10, Keypad_Button(9).button)
 
 # softkey 1
 sw4 = button.Button(4)
 
-def button_softkey_1():
-    m_controller.active_page.softkey_1_press()
-    print("Button_softkey_1")
+def button_softkey_1_press():
+    m_controller.softkey_1_press()
+    print("Button_softkey_1_press")
 
-sw4.on_press = button_softkey_1
+def button_softkey_1_release():
+    m_controller.softkey_1_release()
+    print("Button_softkey_1_release")
+
+sw4.on_press = button_softkey_1_press
+sw4.on_release = button_softkey_1_release
 
 # 0
-sw5 = button.Button(21, Keypad_Button(0, 30).button)
+sw5 = button.Button(21, Keypad_Button(0).button)
 
 # 4
-sw6 = button.Button(15, Keypad_Button(4, 240).button)
+sw6 = button.Button(15, Keypad_Button(4).button)
 
 # 5
-sw7 = button.Button(17, Keypad_Button(5, 300).button)
+sw7 = button.Button(17, Keypad_Button(5).button)
 
 # 6
-sw8 = button.Button(16, Keypad_Button(6, 360).button)
+sw8 = button.Button(16, Keypad_Button(6).button)
 
 # softkey 2
 sw9 = button.Button(3)
 
 def button_softkey_2_press():
-    global mode
-    mode = "preset"
-    led.keypad_color(160, 255, 50)
-    led.sw_hsv(9, 160, 255, 100)
+    m_controller.softkey_2_press()
     print("Button_softkey_2_press")
 
 def button_softkey_2_release():
-    global mode
-    mode = "normal"
-    global t_controller
-    if t_controller.active_timer.running:
-        led.keypad_color(32, 255, 0)
-    else:
-        led.keypad_color(32, 255, 50)
-    led.sw_hsv(9, 160, 255, 50)
+    m_controller.softkey_2_release()
     print("Button_softkey_2_release")
 
 sw9.on_press = button_softkey_2_press
@@ -100,22 +98,27 @@ def button_start_stop():
 sw10.on_press = button_start_stop
 
 # 1
-sw11 = button.Button(18, Keypad_Button(1, 60).button)
+sw11 = button.Button(18, Keypad_Button(1).button)
 
 # 2
-sw12 = button.Button(19, Keypad_Button(2, 120).button)
+sw12 = button.Button(19, Keypad_Button(2).button)
 
 # 3
-sw13 = button.Button(20, Keypad_Button(3, 180).button)
+sw13 = button.Button(20, Keypad_Button(3).button)
 
 #softkey 3
 sw14 = button.Button(2)
 
-def button_softkey_3():
-    m_controller.active_page.softkey_3_press()
-    print("Button_softkey_3")
+def button_softkey_3_press():
+    m_controller.softkey_3_press()
+    print("Button_softkey_3_press")
 
-sw14.on_press = button_softkey_3
+def button_softkey_3_release():
+    m_controller.softkey_3_release()
+    print("Button_softkey_3_release")
+
+sw14.on_press = button_softkey_3_press
+sw14.on_release = button_softkey_3_release
 
 # reset
 sw15 = button.Button(22)
@@ -128,7 +131,6 @@ def button_reset():
 
 sw15.on_press = button_reset
 
-mode = "normal"
 hue = 0
 
 def carbonite_screensaver():
@@ -143,9 +145,9 @@ led.lcd_rgb(0,0,0)
 lcd.clear_screen()
 led.colons(255,255,255,255)
 led.sw_rgb(10, 255, 0, 0)
-led.sw_rgb(4, 255, 0, 0)
 led.keypad_color(32, 255, 50)
 led.sw_hsv(15, 32, 255, 50)
-led.sw_hsv(9, 160, 255, 50)
 led.lcd_rgb(255, 0, 0)
+led.sw_rgb(14, 50, 50, 50) # soft 3
 t_controller.display_time()
+m_controller.display()
