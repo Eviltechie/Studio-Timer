@@ -65,7 +65,7 @@ class TimerController:
         led.digit_6(self.time_string[5])
     
     def notify(self, timer, event):
-        if timer == self.active_timer:
+        if timer == self.active_timer and event != "rate":
             self.time_seconds_to_string();
             self.display_time()
         if event == "stop":

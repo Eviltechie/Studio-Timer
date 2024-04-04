@@ -7,6 +7,7 @@ import random
 import time
 import timer_controller
 import menu_controller
+import menu
 
 t_controller = timer_controller.TimerController()
 m_controller = menu_controller.MenuController(t_controller)
@@ -125,8 +126,11 @@ sw15 = button.Button(22)
 
 def button_reset():
     global t_controller
+    global m_controller
     t_controller.active_timer.set_time(0)
     t_controller.active_timer.change_rate(1000)
+    if isinstance(m_controller.active_page, menu.MenuSpeed):
+        m_controller.display()
     print("Button_reset")
 
 sw15.on_press = button_reset
@@ -150,4 +154,4 @@ led.sw_hsv(15, 32, 255, 50)
 led.lcd_rgb(255, 0, 0)
 led.sw_rgb(14, 50, 50, 50) # soft 3
 t_controller.display_time()
-m_controller.display()
+m_controller.display() # not sure why we have to do this separate

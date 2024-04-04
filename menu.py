@@ -129,10 +129,26 @@ class MenuSpeed(Menu):
     def display(self):
         lcd.clear_screen()
         lcd.write(self.timer_controller.active_timer.timer_name)
+        lcd.set_position(0, 12)
+        lcd.write(str(self.timer_controller.active_timer.rate))
         lcd.set_position(1, 0)
         lcd.write("-10%   +10%    ~")
         led.sw_rgb(4, 255, 255, 255)
         led.sw_rgb(9, 255, 255, 255)
+    
+    def softkey_1_press(self):
+        new_rate = self.timer_controller.active_timer.rate - 100
+        if new_rate < 500:
+            new_rate = 500
+        self.timer_controller.active_timer.change_rate(new_rate)
+        self.display()
+    
+    def softkey_2_press(self):
+        new_rate = self.timer_controller.active_timer.rate + 100
+        if new_rate > 1500:
+            new_rate = 1500
+        self.timer_controller.active_timer.change_rate(new_rate)
+        self.display()
 
 class MenuTimerSelect(Menu):
     def display(self):
