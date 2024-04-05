@@ -6,11 +6,22 @@ class TimerController:
     def __init__(self):
         self.time_string = "000000"
         self.timers = [
-            timer.Timer(self, "Timer 1", 0, 0, 0),
-            timer.Timer(self, "Timer 2", 0, 0, 0),
-            timer.Timer(self, "Timer 3", 0, 0, 0),
+            timer.Timer(self, "Timer 1", 0, 255, 50),
+            timer.Timer(self, "Timer 2", 28, 255, 50),
+            timer.Timer(self, "Timer 3", 56, 255, 50),
+            timer.Timer(self, "Timer 4", 84, 255, 50),
+            timer.Timer(self, "Timer 5", 112, 255, 50),
+            timer.Timer(self, "Timer 6", 140, 255, 50),
+            timer.Timer(self, "Timer 7", 168, 255, 50),
+            timer.Timer(self, "Timer 8", 196, 255, 50),
+            timer.Timer(self, "Timer 9", 224, 255, 50),
             ]
         self.active_timer = self.timers[0]
+    
+    def set_active(self, index):
+        print("Index", index)
+        self.active_timer = self.timers[index]
+        self.notify(self.active_timer, "active")
     
     def time_seconds_to_string(self):
         time_seconds = self.active_timer.time
@@ -64,10 +75,13 @@ class TimerController:
         led.digit_5(self.time_string[4])
         led.digit_6(self.time_string[5])
     
+    def display_keypad(self):
+        led.keypad_color(self.active_timer.h, self.active_timer.s, self.active_timer.v)
+    
     def notify(self, timer, event):
         if timer == self.active_timer and event != "rate":
             self.time_seconds_to_string();
             self.display_time()
-        if event == "stop":
+        if timer == self.active_timer and event == "stop":
             led.sw_rgb(10, 255, 0, 0)
             led.keypad_color(32, 255, 50)

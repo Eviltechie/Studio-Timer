@@ -62,9 +62,9 @@ class MenuDirectionPreset(Menu):
     def softkey_2_release(self):
         self.menu_controller.mode = "normal"
         if self.timer_controller.active_timer.running:
-            led.keypad_color(32, 255, 0)
+            led.keypad_color(0, 0, 0)
         else:
-            led.keypad_color(32, 255, 50)
+            self.timer_controller.display_keypad()
         led.sw_hsv(9, 160, 255, 50)
     
     def digit(self, digit):
@@ -158,3 +158,25 @@ class MenuTimerSelect(Menu):
         lcd.write("Select         ~")
         led.sw_rgb(4, 255, 255, 255)
         led.sw_rgb(9, 0, 0, 0)
+    
+    def softkey_1_press(self):
+        self.menu_controller.mode = "menu_1"
+        led.sw_hsv(1, self.timer_controller.timers[6].h, self.timer_controller.timers[6].s, self.timer_controller.timers[6].v)
+        led.sw_hsv(2, self.timer_controller.timers[7].h, self.timer_controller.timers[7].s, self.timer_controller.timers[7].v)
+        led.sw_hsv(3, self.timer_controller.timers[8].h, self.timer_controller.timers[8].s, self.timer_controller.timers[8].v)
+        led.sw_hsv(5, 0, 0, 0)
+        led.sw_hsv(6, self.timer_controller.timers[3].h, self.timer_controller.timers[3].s, self.timer_controller.timers[3].v)
+        led.sw_hsv(7, self.timer_controller.timers[4].h, self.timer_controller.timers[4].s, self.timer_controller.timers[4].v)
+        led.sw_hsv(8, self.timer_controller.timers[5].h, self.timer_controller.timers[5].s, self.timer_controller.timers[5].v)
+        led.sw_hsv(11, self.timer_controller.timers[0].h, self.timer_controller.timers[0].s, self.timer_controller.timers[0].v)
+        led.sw_hsv(12, self.timer_controller.timers[1].h, self.timer_controller.timers[1].s, self.timer_controller.timers[1].v)
+        led.sw_hsv(13, self.timer_controller.timers[2].h, self.timer_controller.timers[2].s, self.timer_controller.timers[2].v)
+    
+    def softkey_1_release(self):
+        self.menu_controller.mode = "normal"
+        self.timer_controller.display_keypad()
+    
+    def digit(self, digit):
+        if digit == 0:
+            return
+        self.timer_controller.set_active(digit - 1) # -1 because people aren't zero indexed

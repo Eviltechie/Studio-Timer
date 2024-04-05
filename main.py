@@ -88,11 +88,11 @@ def button_start_stop():
     if t_controller.active_timer.running:
         if t_controller.active_timer.stop():
             led.sw_rgb(10, 255, 0, 0)
-            led.keypad_color(32, 255, 50)
+            t_controller.display_keypad()
     else:
         t_controller.time_string_to_seconds()
         if t_controller.active_timer.start():
-            led.keypad_color(32, 255, 0)
+            led.keypad_color(0, 0, 0)
             led.sw_rgb(10, 0, 255, 0)
     print("Button_start_stop")
 
@@ -149,8 +149,8 @@ led.lcd_rgb(0,0,0)
 lcd.clear_screen()
 led.colons(255,255,255,255)
 led.sw_rgb(10, 255, 0, 0)
-led.keypad_color(32, 255, 50)
 led.sw_hsv(15, 32, 255, 50)
+t_controller.display_keypad()
 led.lcd_rgb(255, 0, 0)
 led.sw_rgb(14, 50, 50, 50) # soft 3
 t_controller.display_time()
