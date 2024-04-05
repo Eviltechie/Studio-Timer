@@ -93,12 +93,14 @@ class MenuFiveSeconds(Menu):
         led.sw_rgb(9, 255, 255, 255)
     
     def softkey_1_press(self):
+        self.timer_controller.time_string_to_seconds()
         new_time = self.timer_controller.active_timer.time - 5
         if new_time < 0:
             new_time = 0
         self.timer_controller.active_timer.set_time(new_time)
     
     def softkey_2_press(self):
+        self.timer_controller.time_string_to_seconds()
         new_time = self.timer_controller.active_timer.time + 5
         if new_time > 359999:
             new_time = 359999
@@ -114,12 +116,14 @@ class MenuOneMinute(Menu):
         led.sw_rgb(9, 255, 255, 255)
     
     def softkey_1_press(self):
+        self.timer_controller.time_string_to_seconds()
         new_time = self.timer_controller.active_timer.time - 60
         if new_time < 0:
             new_time = 0
         self.timer_controller.active_timer.set_time(new_time)
     
     def softkey_2_press(self):
+        self.timer_controller.time_string_to_seconds()
         new_time = self.timer_controller.active_timer.time + 60
         if new_time > 359999:
             new_time = 359999

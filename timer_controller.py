@@ -79,7 +79,7 @@ class TimerController:
         led.keypad_color(self.active_timer.h, self.active_timer.s, self.active_timer.v)
     
     def notify(self, timer, event):
-        if timer == self.active_timer and event != "rate":
+        if timer == self.active_timer and (event == "tick" or event == "time"):
             self.time_seconds_to_string();
             self.display_time()
         if timer == self.active_timer and event == "stop":
