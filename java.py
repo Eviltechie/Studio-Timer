@@ -1,18 +1,14 @@
+import led
+import lcd
+import button
 import select
 import sys
-import button
+import re
 
 poll_object = select.poll()
 poll_object.register(sys.stdin, select.POLLIN)
 
-buffer = []
-
-def parse_buffer(buf):
-    print(buf)
-    pass
-
 # Button() uses GPIO number
-
 sw1 = button.PrintButton(14, "7")
 sw2 = button.PrintButton(11, "8")
 sw3 = button.PrintButton(10, "9")
@@ -29,15 +25,18 @@ sw13 = button.PrintButton(20, "3")
 sw14 = button.PrintButton(2, "softkey_3")
 sw15 = button.PrintButton(22, "reset")
 
+buffer = []
+
 while True:
     if poll_object.poll(0):
         ch = sys.stdin.read(1)
         if ch == "\n":
             pass
         elif ch == "~":
-                parse_buffer("".join(buffer))
-                buffer = []
+            exec("".join(buffer))
+            #parse_buffer("".join(buffer))
+            buffer = []
         else:
             buffer.append(ch)
             #print(ord(ch))
-            print(buffer)
+            #print(buffer)
