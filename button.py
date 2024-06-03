@@ -36,3 +36,14 @@ class Button:
         # runs every 20ms and then push onto a queue to re-enable.
         time.sleep(0.02)
         self.reset_irq()
+
+class PrintButton(Button):
+    def __init__(self, pin_number, name):
+        self.name = name
+        super().__init__(pin_number, self.press, self.release)
+    
+    def press(self):
+        print("Button_" + self.name + "_press")
+    
+    def release(self):
+        print("Button_" + self.name + "_release")
