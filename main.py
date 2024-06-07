@@ -27,6 +27,15 @@ sw15 = button.PrintButton(22, "reset")
 
 buffer = []
 
+lcd.clear_screen()
+led.lcd_rgb(0, 0, 0)
+led.keypad_color(0, 0, 0)
+led.sw_rgb(4, 0, 0, 0)
+led.sw_rgb(9, 0, 0, 0)
+led.sw_rgb(14, 0, 0, 0)
+led.sw_rgb(10, 0, 0, 0)
+led.sw_rgb(15, 0, 0, 0)
+
 while True:
     if poll_object.poll(0):
         ch = sys.stdin.read(1)
