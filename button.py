@@ -14,6 +14,7 @@ class Button:
         self.pin = machine.Pin(pin_number, machine.Pin.IN, machine.Pin.PULL_UP)
         self.pin.irq(handler=self.handle_irq, trigger=machine.Pin.IRQ_FALLING | machine.Pin.IRQ_RISING, hard=True)
         self.callback_ref = self.callback
+        self.pressed = False
     
     # Handle the hard interupt
     def handle_irq(self, pin):
@@ -26,14 +27,22 @@ class Button:
     
     # The interrupt handler schedules this to run so we can allocate memory and such
     def callback(self, value):
-        # value 0 is pressed, 1 is released
-        if not value and self.on_press is not None:
+        # value 0 is low (pressed), 1 is high (released)
+        currently_pressed = not value
+        
+        if currently_pressed and not self.pressed and self.on_press is not None:
+            self.pressed = True
             self.on_press()
-        elif self.on_release is not None:
+        elif self.pressed and self.on_release is not None:
+            self.pressed = False
             self.on_release()
         # Blocking isn't great, alternative can be to build a timer that
         # runs every 20ms and then push onto a queue to re-enable.
         time.sleep(0.02)
+        # Try to catch a release we may have missed during the debounce
+        if self.pressed and currently_pressed and self.pin.value() and self.on_release is not None:
+            self.pressed = False
+            self.on_release()
         self.reset_irq()
 
 class PrintButton(Button):
