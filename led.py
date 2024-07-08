@@ -264,6 +264,14 @@ def digit_6(value):
     }
     i2c.writeto_mem(0x42, 0x2C, segments[value])
 
+def digits(time_string):
+    digit_1(time_string[0])
+    digit_2(time_string[1])
+    digit_3(time_string[2])
+    digit_4(time_string[3])
+    digit_5(time_string[4])
+    digit_6(time_string[5])
+
 def digit_1_raw(a, b, c, d, e, f, g, dp):
     msg = bytearray()
     msg.append(a)
